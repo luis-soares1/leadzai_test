@@ -6,6 +6,11 @@ from math import floor
 # I choose the set because the boundaries and around will sometimes overlap,
 # which using a list would mean I would had repeated page values.
 
+# Some assuptions:
+
+## If around -+ current_page is bigger or lower than the limits, an exception is thrown.
+## The document doesn't specify this case, and I went with the approach.
+
 class Pagination:
     def __init__(self, current_page: int, total_pages: int, boundaries: int,
                  around: int):
@@ -72,5 +77,5 @@ class Pagination:
 
 
 if __name__ == "__main__":
-    p = Pagination(current_page=1, total_pages=0, boundaries=2, around=2)
+    p = Pagination(current_page=10, total_pages=10, boundaries=3, around=0)
     p.execute()
