@@ -59,7 +59,7 @@ class Pagination:
             raise Exception(f"No space left for boundaries. Total pages: {self.total_pages}, Boundaries: {self.boundaries}")
 
         elif self.current_page-self.around < 1 or self.current_page + self.around > self.total_pages:
-            raise Exception("Around value goes below or upwards delimitations")
+            raise Exception(f"Around value ({self.around}) goes below or upwards delimitations")
 
 
     def execute(self):
@@ -72,5 +72,5 @@ class Pagination:
 
 
 if __name__ == "__main__":
-    p = Pagination(30, 40, 21, 3)
+    p = Pagination(current_page=1, total_pages=0, boundaries=2, around=2)
     p.execute()

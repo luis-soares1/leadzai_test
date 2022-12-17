@@ -10,15 +10,20 @@ class TestPagination(unittest.TestCase):
             p.execute()
 
     def test_property_not_integer(self):
-        p = Pagination(current_page="asd", total_pages=2, boundaries=3, around=4)
+        p = Pagination(current_page="1", total_pages=2, boundaries=3, around=4)
         with self.assertRaises(Exception):
             p.execute()
 
-    def test_big_around(self):
+    def test_big_around_lower_limit(self):
         p = Pagination(current_page=5, total_pages=11, boundaries=0, around=6)
         with self.assertRaises(Exception):
             p.execute()
-    
+
+    def test_big_around_upper_limit(self):
+        p = Pagination(current_page=10, total_pages=14, boundaries=0, around=5)
+        with self.assertRaises(Exception):
+            p.execute()
+
     def test_total_pages_zero(self):
         p = Pagination(current_page=5, total_pages=0, boundaries=1, around=1)
         with self.assertRaises(Exception):
@@ -31,7 +36,6 @@ class TestPagination(unittest.TestCase):
     
     def test_negative_current_page(self):
         p1 = Pagination(current_page=-1, total_pages=5, boundaries=0, around=0)
-
         with self.assertRaises(Exception):
             p1.execute()
     
@@ -62,6 +66,7 @@ class TestPagination(unittest.TestCase):
                                              14997, 14998, 14999, 15000, 15001,
                                              15002, 15003, 15004, 15005, 15006,
                                              29998, 29999, 30000])
+    
 
 
 
