@@ -6,5 +6,5 @@ with different values passed into the constructor and call the method execute() 
 
 To run the tests that cover the corner cases, run these commands in the terminal:
 
--> cd leadzai_test
--> python unit_test.py
+1) cd leadzai_test
+2) python unit_test.py
