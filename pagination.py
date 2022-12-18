@@ -6,6 +6,9 @@ from math import floor
 # I choose the set because the boundaries and around will sometimes overlap,
 # which using a list would mean I would had repeated page values.
 
+# Some places I sacrificed shorter code for readability (exec_around and exec_boundaries)
+
+
 # Some assuptions:
 
 ## If around -+ current_page is bigger or lower than the limits, an exception is thrown.
