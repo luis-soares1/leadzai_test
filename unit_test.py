@@ -1,7 +1,6 @@
 from pagination import Pagination
 import unittest
 
-
 class TestPagination(unittest.TestCase):
 
     def test_current_page_bigger_than_total_pages(self):
@@ -66,11 +65,11 @@ class TestPagination(unittest.TestCase):
                                              14997, 14998, 14999, 15000, 15001,
                                              15002, 15003, 15004, 15005, 15006,
                                              29998, 29999, 30000])
-    
+
     def test_current_number_last_position(self):
         p1 = Pagination(10, 10, 3, 0)
         self.assertEqual(p1.page_container, [1, 2, 3, 8, 9, 10])
-    
+
     def test_current_number_last_position_with_around_non_zero(self):
         p1 = Pagination(10, 10, 3, 1)
         with self.assertRaises(Exception):
@@ -80,7 +79,6 @@ class TestPagination(unittest.TestCase):
         p1 = Pagination(1, 10, 3, 1)
         with self.assertRaises(Exception):
             p1.execute()
-    
 
 
 

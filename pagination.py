@@ -9,7 +9,8 @@ from math import floor
 # Some assuptions:
 
 ## If around -+ current_page is bigger or lower than the limits, an exception is thrown.
-## The document doesn't specify this case, and I went with the approach.
+## The document doesn't specify this case, and I went with this approach.
+
 
 class Pagination:
     def __init__(self, current_page: int, total_pages: int, boundaries: int,
