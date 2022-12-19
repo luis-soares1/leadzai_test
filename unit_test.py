@@ -68,6 +68,12 @@ class TestPagination(unittest.TestCase):
 
     def test_current_number_last_position(self):
         p1 = Pagination(10, 10, 3, 0)
+        p1.execute()
+        self.assertEqual(p1.page_container, [1, 2, 3, 8, 9, 10])
+
+    def test_current_number_first_position(self):
+        p1 = Pagination(10, 10, 3, 0)
+        p1.execute()
         self.assertEqual(p1.page_container, [1, 2, 3, 8, 9, 10])
 
     def test_current_number_last_position_with_around_non_zero(self):

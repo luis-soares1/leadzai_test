@@ -1,18 +1,12 @@
 from math import floor
 
-# SUMMARY
 
-# The numbers that are to be printed in the end, will be added to the set.
-# I choose the set because the boundaries and around will sometimes overlap,
-# which using a list would mean I would had repeated page values.
-
+# NOTES:
 # Some places I sacrificed shorter code for readability (exec_around and exec_boundaries)
 
-
-# Some assuptions:
-
-## If around -+ current_page is bigger or lower than the limits, an exception is thrown.
-## The document doesn't specify this case, and I went with this approach.
+# ASSUMPTION:
+# If current_page -+ around is BIGGER or LOWER than the limits, an exception is thrown.
+# The document doesn't specify this case, and I went with this approach.
 
 
 class Pagination:
@@ -25,16 +19,19 @@ class Pagination:
         self.around: int = around
         self.page_container: set = set()
 
+    # Adds elements from start_idx to end_idx to the page container set
     def _add_elements(self, start_idx: int, end_idx: int):
         for page in range(start_idx, end_idx + 1):
             self.page_container.add(page)
 
+    # Add the boundary elements
     def exec_boundaries(self, start: bool = True):
         if start:
             self._add_elements(1, self.boundaries)
             return
         self._add_elements(self.total_pages-self.boundaries+1, self.total_pages)
 
+    # Add the around elements
     def exec_around(self, backwards: bool = True):
         if backwards:
             self._add_elements(self.current_page-self.around, self.current_page)
@@ -52,6 +49,7 @@ class Pagination:
                 print("...", end=" ")
             print(n, end=" ")
 
+    # Throws an exception for invalid inputs
     def validation(self):
         if not all([
             isinstance(self.current_page, int), isinstance(self.around, int),
@@ -81,5 +79,5 @@ class Pagination:
 
 
 if __name__ == "__main__":
-    p = Pagination(current_page=10, total_pages=10, boundaries=3, around=0)
+    p = Pagination(current_page=4, total_pages=5, boundaries=3, around=5-4)
     p.execute()
