@@ -1,13 +1,5 @@
 from math import floor
-
-
-# NOTES:
-# Some places I sacrificed shorter code for readability (exec_around and exec_boundaries)
-
-# ASSUMPTION:
-# If current_page -+ around is BIGGER or LOWER than the limits, an exception is thrown.
-# The document doesn't specify this case, and I went with this approach.
-
+from sortedcollections import OrderedSet
 
 class Pagination:
     def __init__(self, current_page: int, total_pages: int, boundaries: int,
@@ -21,11 +13,17 @@ class Pagination:
 
     # Adds elements from start_idx to end_idx to the page container set
     def _add_elements(self, start_idx: int, end_idx: int):
+        if end_idx > self.total_pages:
+            end_idx = self.total_pages
+        elif start_idx < 1:
+            start_idx = 1
+        
         for page in range(start_idx, end_idx + 1):
             self.page_container.add(page)
 
     # Add the boundary elements
     def exec_boundaries(self, start: bool = True):
+        print(self.boundaries, "++++++++++++")
         if start:
             self._add_elements(1, self.boundaries)
             return
@@ -38,16 +36,26 @@ class Pagination:
             return
         self._add_elements(self.current_page+1, self.current_page + self.around)
 
-    def print_pagination(self):
+    def _get_two_dots_idxs(self):
         self.page_container.add(self.current_page)
         self.page_container = sorted(self.page_container)
+        two_dots_idxs = []
+
         for idx, n in enumerate(self.page_container):
-            if idx == 0:
-                print(n, end=" ")
-                continue
+            # check for middle, beginning and end three dots
+            if idx == 0 and n != 1:
+                two_dots_idxs.append(idx)
+            elif (idx == len(self.page_container) - 1) and n != self.total_pages:
+                two_dots_idxs.append(idx+1)
             elif self.page_container[idx] - self.page_container[idx-1] > 1:
-                print("...", end=" ")
-            print(n, end=" ")
+                two_dots_idxs.append(idx)
+        return reversed(OrderedSet(two_dots_idxs))
+
+    def print_pagination(self):
+        for idx in self._get_two_dots_idxs():
+            self.page_container.insert(idx, "...")
+
+        print(self.page_container)
 
     # Throws an exception for invalid inputs
     def validation(self):
@@ -55,18 +63,10 @@ class Pagination:
             isinstance(self.current_page, int), isinstance(self.around, int),
             isinstance(self.boundaries, int), isinstance(self.total_pages, int)]):
             raise Exception("Not an integer")
-
         elif not all([self.current_page > 0, self.around >= 0, self.boundaries >= 0, self.total_pages > 0]):
             raise Exception("Properties have values below 0 or total pages are 0")
-
         elif self.current_page > self.total_pages:
             raise Exception("Current page is bigger than the total number of pages")
-
-        elif self.boundaries > floor(self.total_pages/2):
-            raise Exception(f"No space left for boundaries. Total pages: {self.total_pages}, Boundaries: {self.boundaries}")
-
-        elif self.current_page-self.around < 1 or self.current_page + self.around > self.total_pages:
-            raise Exception(f"Around value ({self.around}) goes below or upwards delimitations")
 
 
     def execute(self):
@@ -79,5 +79,5 @@ class Pagination:
 
 
 if __name__ == "__main__":
-    p = Pagination(current_page=4, total_pages=5, boundaries=3, around=5-4)
+    p = Pagination(current_page=2, total_pages=10, boundaries=0, around=1)
     p.execute()
