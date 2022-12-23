@@ -49,9 +49,11 @@ class Pagination:
                 two_dots_idxs.append(idx+1)
             elif self.page_container[idx] - self.page_container[idx-1] > 1:
                 two_dots_idxs.append(idx)
+        # Reversed: So the first insertions are in the end. If it was in the begining
+        # the index for the last ones would not be correct.
         return reversed(two_dots_idxs)
 
-    # inserts the "..." in their place and prints the pagination
+    # inserts the "..." in their place
     def insert_three_dots(self):
         for idx in self._get_two_dots_idxs():
             self.page_container.insert(idx, "...")
@@ -74,9 +76,10 @@ class Pagination:
         self.exec_around()
         self.exec_around(False)
         self.insert_three_dots()
+        return self
 
 
 if __name__ == "__main__":
-    p = Pagination(3, 10, 0, 0)
+    p = Pagination(current_page=5, total_pages=5, boundaries=3, around=3)
     p.execute()
     print(p)

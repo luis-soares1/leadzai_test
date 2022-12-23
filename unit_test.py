@@ -55,6 +55,7 @@ class TestPagination(unittest.TestCase):
         p = Pagination(current_page=5, total_pages=7, boundaries=0, around=2)
         p.execute()
         self.assertEqual(p.page_container, ['...', 3, 4, 5, 6, 7])
+        self.assertEqual(Pagination(100, 100, 0, 1).execute().page_container, ['...', 99, 100])
 
     def test_two_dots_first_and_end(self):
         p = Pagination(current_page=5, total_pages=10, boundaries=0, around=2)
@@ -65,21 +66,39 @@ class TestPagination(unittest.TestCase):
         p = Pagination(current_page=3, total_pages=10, boundaries=0, around=2)
         p.execute()
         self.assertEqual(p.page_container, [1, 2, 3, 4, 5, '...'])
+        self.assertEqual(Pagination(1, 1000, 0, 2).execute().page_container, [1, 2, 3, '...'])
+    
+    def test_three_dots_middle(self):
+        self.assertEqual(Pagination(1, 1000, 3, 1).execute().page_container, [1, 2, 3, '...', 998, 999, 1000])
+        self.assertEqual(Pagination(1000, 1000, 3, 1).execute().page_container, [1, 2, 3, '...', 998, 999, 1000])
+        self.assertEqual(Pagination(100, 100, 1, 0).execute().page_container, [1, '...', 100])
+        self.assertEqual(Pagination(100, 100, 5, 4).execute().page_container, [1, 2, 3, 4, 5, '...', 96, 97, 98, 99, 100])
 
     def test_1_element_dots_first(self):
         p = Pagination(current_page=13, total_pages=13, boundaries=0, around=0)
         p.execute()
         self.assertEqual(p.page_container, ['...', 13])
+        self.assertEqual(Pagination(100, 100, 0, 0).execute().page_container, ['...', 100])
 
     def test_1_element_dots_last(self):
         p = Pagination(current_page=1, total_pages=13, boundaries=0, around=0)
         p.execute()
         self.assertEqual(p.page_container, [1, '...'])
+    
+    def test_double_three_dots(self):
+        self.assertEqual(Pagination(50, 100, 1, 0).execute().page_container, [1, '...', 50, '...', 100])
+        self.assertEqual(Pagination(500, 1000, 2, 3).execute().page_container, [1, 2, '...', 497, 498, 499, 500, 501, 502, 503, '...', 999, 1000])
+        self.assertEqual(Pagination(7, 15, 3, 1).execute().page_container, [1, 2, 3, '...', 6, 7, 8, '...', 13, 14, 15])
 
     def test_1_element_double_three_dots(self):
         p = Pagination(current_page=3, total_pages=10, boundaries=0, around=0)
         p.execute()
         self.assertEqual(p.page_container, ["...", 3, '...'])
+
+    def current_page_equals_total_pages(self):
+        p = Pagination(current_page=5, total_pages=5, boundaries=3, around=3)
+        p.execute()
+        self.assertEqual(p.page_container, ['...', 13])
 
     def test_big_around_lower_limit(self):
         p = Pagination(current_page=5, total_pages=11, boundaries=0, around=6)
@@ -123,6 +142,13 @@ class TestPagination(unittest.TestCase):
         p1 = Pagination(current_page=5, total_pages=5, boundaries=6, around=2)
         p1.execute()
         self.assertEqual(p1.page_container, [1, 2, 3, 4, 5])
+
+    def single_page_total_page(self):
+        self.assertEqual(Pagination(1, 1, 0, 0).execute().page_container, [1])
+
+    def test_general_inputs(self):
+        self.assertEqual(Pagination(5, 10, 2, 3).execute().page_container, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        self.assertEqual(Pagination(5, 10, 3, 4).execute().page_container, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
 if __name__ == "__main__":
     unittest.main()
