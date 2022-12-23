@@ -52,7 +52,7 @@ class Pagination:
         return reversed(two_dots_idxs)
 
     # inserts the "..." in their place and prints the pagination
-    def print_pagination(self):
+    def insert_three_dots(self):
         for idx in self._get_two_dots_idxs():
             self.page_container.insert(idx, "...")
 
@@ -73,7 +73,7 @@ class Pagination:
         self.exec_boundaries(False)
         self.exec_around()
         self.exec_around(False)
-        self.print_pagination()
+        self.insert_three_dots()
 
 
 if __name__ == "__main__":
