@@ -1,5 +1,3 @@
-from math import floor
-from sortedcollections import OrderedSet
 
 class Pagination:
     def __init__(self, current_page: int, total_pages: int, boundaries: int,
@@ -10,6 +8,9 @@ class Pagination:
         self.boundaries: int = boundaries
         self.around: int = around
         self.page_container: set = set()
+
+    def __str__(self) -> str:
+        return " ".join([str(page) for page in self.page_container])
 
     # Adds elements from start_idx to end_idx to the page container set
     def _add_elements(self, start_idx: int, end_idx: int):
@@ -23,7 +24,6 @@ class Pagination:
 
     # Add the boundary elements
     def exec_boundaries(self, start: bool = True):
-        print(self.boundaries, "++++++++++++")
         if start:
             self._add_elements(1, self.boundaries)
             return
@@ -51,11 +51,10 @@ class Pagination:
                 two_dots_idxs.append(idx)
         return reversed(two_dots_idxs)
 
+    # inserts the "..." in their place and prints the pagination
     def print_pagination(self):
         for idx in self._get_two_dots_idxs():
             self.page_container.insert(idx, "...")
-
-        print(self.page_container)
 
     # Throws an exception for invalid inputs
     def validation(self):
@@ -68,7 +67,6 @@ class Pagination:
         elif self.current_page > self.total_pages:
             raise Exception("Current page is bigger than the total number of pages")
 
-
     def execute(self):
         self.validation()
         self.exec_boundaries()
@@ -79,5 +77,6 @@ class Pagination:
 
 
 if __name__ == "__main__":
-    p = Pagination(current_page=5, total_pages=10, boundaries=6, around=2)
+    p = Pagination(3, 10, 0, 0)
     p.execute()
+    print(p)
