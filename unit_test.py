@@ -149,6 +149,12 @@ class TestPagination(unittest.TestCase):
     def test_general_inputs(self):
         self.assertEqual(Pagination(5, 10, 2, 3).execute().page_container, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         self.assertEqual(Pagination(5, 10, 3, 4).execute().page_container, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        self.assertEqual(Pagination(4, 10, 2, 2).execute().page_container, [1, 2, 3, 4, 5, 6, '...', 9, 10])
+        self.assertEqual(Pagination(6, 15, 3, 3).execute().page_container, [1, 2, 3, 4, 5, 6, 7, 8, 9, '...', 13, 14, 15])
+        self.assertEqual(Pagination(7, 15, 3, 1).execute().page_container, [1, 2, 3, '...', 6, 7, 8, '...', 13, 14, 15])
+        self.assertEqual(Pagination(4, 10, 9, 10).execute().page_container, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+        self.assertEqual(Pagination(10, 20, 5, 1).execute().page_container, [1, 2, 3, 4, 5, '...', 9, 10, 11, '...', 16, 17, 18, 19, 20])
+        self.assertEqual(Pagination(10, 20, 1, 4).execute().page_container, [1, '...', 6, 7, 8, 9, 10, 11, 12, 13, 14, '...', 20])
 
 if __name__ == "__main__":
     unittest.main()
