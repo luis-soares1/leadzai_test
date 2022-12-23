@@ -17,7 +17,7 @@ class Pagination:
             end_idx = self.total_pages
         elif start_idx < 1:
             start_idx = 1
-        
+
         for page in range(start_idx, end_idx + 1):
             self.page_container.add(page)
 
@@ -45,11 +45,11 @@ class Pagination:
             # check for middle, beginning and end three dots
             if idx == 0 and n != 1:
                 two_dots_idxs.append(idx)
-            elif (idx == len(self.page_container) - 1) and n != self.total_pages:
+            if (idx == len(self.page_container) - 1) and n != self.total_pages:
                 two_dots_idxs.append(idx+1)
             elif self.page_container[idx] - self.page_container[idx-1] > 1:
                 two_dots_idxs.append(idx)
-        return reversed(OrderedSet(two_dots_idxs))
+        return reversed(two_dots_idxs)
 
     def print_pagination(self):
         for idx in self._get_two_dots_idxs():
@@ -79,5 +79,5 @@ class Pagination:
 
 
 if __name__ == "__main__":
-    p = Pagination(current_page=2, total_pages=10, boundaries=0, around=1)
+    p = Pagination(current_page=5, total_pages=10, boundaries=6, around=2)
     p.execute()
