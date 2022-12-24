@@ -80,6 +80,6 @@ class Pagination:
 
 
 if __name__ == "__main__":
-    p = Pagination(current_page=5, total_pages=5, boundaries=3, around=3)
+    p = Pagination(current_page=9, total_pages=10, boundaries=6, around=1)
     p.execute()
     print(p)
